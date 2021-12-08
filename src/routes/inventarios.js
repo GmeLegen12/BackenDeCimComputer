@@ -3,7 +3,7 @@ const router = express.Router();
 
 const mysqlConnection = require("../database");
 
-router.get("/", (req, res) =>{
+router.get("/get", (req, res) =>{
     mysqlConnection.query("SELECT * FROM inventario", (err, rows, fields) =>{
         if(!err){
             res.json(rows)
@@ -13,7 +13,7 @@ router.get("/", (req, res) =>{
         }
     });
 });
-router.get("/:id", (req, res) =>{
+router.get("/get/:id", (req, res) =>{
     const { id } = req.params;
     console.log(id)
     mysqlConnection.query("SELECT * FROM inventario WHERE id = ?", [id], (err, rows, fields) =>{
@@ -26,7 +26,7 @@ router.get("/:id", (req, res) =>{
     });
 });
 
-router.post("/", (req, res) =>{
+router.post("/save", (req, res) =>{
     const { id, nombre, proveedor, cantidad, marca, sevendepor, costo, iva, ganancias, ventas, descripcion } = req.body;
     
     const query = "INSERT INTO inventario (id, nombre, proveedor, cantidad, marca, sevendepor, costo, iva, ganancias, venta, descripcion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -41,7 +41,7 @@ router.post("/", (req, res) =>{
     });
 });
 
-router.put("/:id", (req, res) => {
+router.put("/update/:id", (req, res) => {
     const { id } = req.params;
     const { nombre, proveedor, cantidad, marca, sevendepor, costo, iva, ganancias, ventas, descripcion } = req.body;
 
@@ -57,7 +57,7 @@ router.put("/:id", (req, res) => {
     });
 
 });
-router.delete("/:id", (req, res) =>{
+router.delete("/delete/:id", (req, res) =>{
     const { id } = req.params;
 
     const query = "DELETE FROM inventario WHERE id=?";
@@ -71,4 +71,5 @@ router.delete("/:id", (req, res) =>{
     });
 
 });
+
 module.exports = router;
