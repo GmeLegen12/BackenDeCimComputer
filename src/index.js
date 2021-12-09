@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-
+const rutas =  require("./routes/inventarios.js");
 // configuracion
     app.set("port", process.env.PORT || 3900);
 
@@ -14,7 +14,7 @@ const app = express();
         next();
     });
 // rutas
-    app.use("/api" ,require("./routes/inventarios.js"));
+    app.use("/api" , rutas);
 
 // iniciar servidor
 app.listen(app.get("port"), ()=>{
