@@ -1,12 +1,33 @@
+"use strict"
+
+const mysqlConnection = require("../database");
 const express = require('express');
 const router = express.Router();
+const multer = require('multer'),
+        mime = require('mime-types');
 const InventarioControllers = require('../controllers/InventarioControllers');
+const path = require("path"), fs = require("fs");
+
+
+const diskStorage = multer.diskStorage({
+    destination: path.join(__dirname, "../image"),
+    filename: (req, file, cb) =>{
+        cb(null, Date.now() + "-_-" + file.originalname)
+    },
+    
+});
+
+const fileUpload = multer({
+    storage: diskStorage
+}).single("image");
 
 router.get("/get", InventarioControllers.buscarProductos);
 
 router.get("/get/:id", InventarioControllers.buscarProductosPorId);
 
-router.post("/save", InventarioControllers.guardarProductos);
+router.post("/save",  fileUpload ,InventarioControllers.guardarProductos);
+
+router.post("/convertir",  InventarioControllers.obtenerImagen);
 
 router.put("/update/:id", InventarioControllers.actualizarProducto);
 
